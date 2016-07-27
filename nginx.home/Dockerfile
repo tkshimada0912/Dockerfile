@@ -1,4 +1,3 @@
-# use the ubuntu base image provided by dotCloud
 FROM centos
 
 RUN yum -y install epel-release
@@ -12,19 +11,19 @@ RUN cd /tmp &&\
 git clone https://github.com/pagespeed/ngx_pagespeed.git &&\
 cd /tmp/ngx_pagespeed/ &&\
 wget https://dl.google.com/dl/page-speed/psol/1.10.33.2.tar.gz &&\
-tar -xzvf 1.10.33.2.tar.gz 
+tar xzvf 1.10.33.2.tar.gz && rm 1.10.33.2.tar.gz
 
 RUN cd /tmp &&\
 wget http://nginx.org/download/nginx-1.9.10.tar.gz &&\
-tar zxvf nginx-1.9.10.tar.gz
+tar zxvf nginx-1.9.10.tar.gz && rm nginx-1.9.10.tar.gz
 
 RUN cd /tmp &&\
 wget https://www.openssl.org/source/openssl-1.0.2f.tar.gz &&\
-tar zxvf openssl-1.0.2f.tar.gz
+tar zxvf openssl-1.0.2f.tar.gz && rm openssl-1.0.2f.tar.gz
 
 RUN cd /tmp &&\
 wget https://github.com/grahamedgecombe/nginx-ct/archive/master.zip &&\
-unzip master.zip
+unzip master.zip && rm master.zip
 
 RUN cd /tmp/nginx-1.9.10 && ./configure --add-module=../ngx_pagespeed \
 --add-module=../nginx-ct-master --with-openssl=../openssl-1.0.2f \
@@ -45,6 +44,17 @@ RUN cd /tmp/nginx-1.9.10 && ./configure --add-module=../ngx_pagespeed \
 make &&\
 make install 
 
+ADD nginx/blog.ayurina.net.crt /etc/nginx/
+ADD nginx/blog.ayurina.net.csr /etc/nginx/
+ADD nginx/ca.crt /etc/nginx/
+ADD nginx/dhparams_4096.pem /etc/nginx/
+ADD nginx/nginx.conf /etc/nginx/
+ADD nginx/privkey.pem /etc/nginx/
+ADD nginx/wordpress.conf /etc/nginx/
+
+RUN useradd nginx
+RUN mkdir -p /var/cache/nginx/client_temp && chown nginx /var/cache/nginx/client_temp
+RUN cd /etc/nginx && ln -s /var/log/nginx logs
 
 # make sure the package repository is up to date
 
