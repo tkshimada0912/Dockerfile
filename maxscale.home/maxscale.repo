@@ -1,0 +1,6 @@
+[maxscale]
+name = maxscale
+baseurl = http://downloads.mariadb.com/MaxScale/latest/centos/7/x86_64
+gpgkey = http://downloads.mariadb.com/MaxScale/MariaDB-MaxScale-GPG-KEY
+enabled=1
+gpgcheck=true
