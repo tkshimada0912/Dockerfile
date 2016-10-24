@@ -6,9 +6,12 @@ RUN yum -y install epel-release &&\
     yum -y update &&\
     ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime &&\
     yum -y install MariaDB-server MariaDB-devel MariaDB-client
+ADD server.cnf /etc/my.cnf.d/server.cnf
 
 # make sure the package repository is up to date
 
 # install memcached
 
 # expose memcached port
+
+CMD ["/usr/bin/mysqld_safe"]
