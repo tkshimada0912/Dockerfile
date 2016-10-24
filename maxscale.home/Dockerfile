@@ -9,3 +9,4 @@ RUN yum -y install epel-release net-tools &&\
     yum -y install MariaDB-client maxscale
 ADD maxscale.cnf /etc/maxscale.cnf
 
+ENTRYPOINT ["maxscale","-d"]
