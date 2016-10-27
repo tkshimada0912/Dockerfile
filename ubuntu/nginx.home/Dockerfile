@@ -1,5 +1,9 @@
 FROM ubuntu
 
+ENV PAGESPEED_VERSION 1.11.33.4
+ENV OPENSSL_VERSION 1.1.0b
+ENV NGINX_VERSION 1.11.5
+
 EXPOSE 80
 EXPOSE 443
 
@@ -9,26 +13,27 @@ RUN apt update && apt upgrade -y &&\
     apt install -y libpcre3-dev unzip git wget zlib1g-dev &&\
 \
 cd /tmp &&\
-wget https://github.com/pagespeed/ngx_pagespeed/archive/v1.11.33.4-beta.tar.gz &&\
-tar zxvf v1.11.33.4-beta.tar.gz && ln -s ngx_pagespeed-1.11.33.4-beta ngx_pagespeed && rm v1.11.33.4-beta.tar.gz &&\
+wget https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}-beta.tar.gz &&\
+tar zxvf v${PAGESPEED_VERSION}-beta.tar.gz && ln -s ngx_pagespeed-${PAGESPEED_VERSION}-beta ngx_pagespeed && rm v${PAGESPEED_VERSION}-beta.tar.gz &&\
 cd /tmp/ngx_pagespeed/ &&\
-wget https://dl.google.com/dl/page-speed/psol/1.11.33.4.tar.gz &&\
-tar xzvf 1.11.33.4.tar.gz && rm 1.11.33.4.tar.gz &&\
+wget https://dl.google.com/dl/page-speed/psol/${PAGESPEED_VERSION}.tar.gz &&\
+tar xzvf ${PAGESPEED_VERSION}.tar.gz && rm ${PAGESPEED_VERSION}.tar.gz &&\
 \
 cd /tmp &&\
-wget https://www.openssl.org/source/openssl-1.1.0b.tar.gz &&\
-tar zxvf openssl-1.1.0b.tar.gz && rm openssl-1.1.0b.tar.gz &&\
+wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz &&\
+tar zxvf openssl-${OPENSSL_VERSION}.tar.gz && rm openssl-${OPENSSL_VERSION}.tar.gz &&\
+ln -s openssl-${OPENSSL_VERSION} openssl &&\
 \
 cd /tmp &&\
 wget https://github.com/grahamedgecombe/nginx-ct/archive/master.zip &&\
 unzip master.zip && rm master.zip &&\
 \
 cd /tmp &&\
-wget http://nginx.org/download/nginx-1.11.5.tar.gz &&\
-tar zxvf nginx-1.11.5.tar.gz && rm nginx-1.11.5.tar.gz &&\
+wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz &&\
+tar zxvf nginx-${NGINX_VERSION}.tar.gz && rm nginx-${NGINX_VERSION}.tar.gz &&\
 \
-cd /tmp/nginx-1.11.5 && ./configure --add-module=../ngx_pagespeed \
---add-module=../nginx-ct-master --with-openssl=../openssl-1.1.0b \
+cd /tmp/nginx-${NGINX_VERSION} && ./configure --add-module=../ngx_pagespeed \
+--add-module=../nginx-ct-master --with-openssl=../openssl \
 --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf \
 --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log \
 --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock \
@@ -47,12 +52,12 @@ make -j2 &&\
 make install &&\
 cd /tmp && rm -fr ng* openssl*
 
-ADD nginx/ssl/ayurina.net-ecc.crt /etc/nginx/
-ADD nginx/ssl/ayurina-ecc.key /etc/nginx/
-ADD nginx/ca.crt /etc/nginx/
-ADD nginx/dhparams_4096.pem /etc/nginx/
-ADD nginx/nginx.conf /etc/nginx/
-ADD nginx/wordpress.conf /etc/nginx/
+COPY nginx/ssl/ayurina.net-ecc.crt /etc/nginx/
+COPY nginx/ssl/ayurina-ecc.key /etc/nginx/
+COPY nginx/ca.crt /etc/nginx/
+COPY nginx/dhparams_4096.pem /etc/nginx/
+COPY nginx/nginx.conf /etc/nginx/
+COPY nginx/wordpress.conf /etc/nginx/
 
 RUN useradd nginx
 RUN mkdir -p /var/cache/nginx/client_temp && chown nginx /var/cache/nginx/client_temp
