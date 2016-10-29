@@ -2,11 +2,13 @@ version: '2'
 services:
   mariadb:
     build: ../mariadb.home
+    hostname: mariadb
     volumes:
      - /share/mariadb/var/log:/var/log
      - /share/mariadb/var/lib/mysql:/var/lib/mysql
   maxscale:
     build: ../maxscale.home
+    hostname: maxscale
     volumes:
      - /share/maxscale/var/log:/var/log
     links:
@@ -15,6 +17,7 @@ services:
      - mariadb
   hhvm:
     build: ../ubuntu/hhvm.home
+    hostname: hhvm
     volumes:
      - /share/hhvm/var/log:/var/log
      - /share/www/html:/var/www/html
@@ -26,8 +29,10 @@ services:
      - mariadb
   memcached:
      build: ../alpine/memcached
+     hostname: memcached
   nginx:
     build: ../ubuntu/nginx.home
+    hostname: nginx
     volumes:
      - /share/nginx/var/log:/var/log
      - /share/www/html:/var/www/html
