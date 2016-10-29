@@ -1,0 +1,38 @@
+version: '2'
+services:
+  mariadb:
+    build: ../mariadb.home
+    volumes:
+     - /share/mariadb/var/log:/var/log
+     - /share/mariadb/var/lib/mysql:/var/lib/mysql
+  maxscale:
+    build: ../maxscale.home
+    volumes:
+     - /share/maxscale/var/log:/var/log
+    links:
+     - mariadb
+    depends_on:
+     - mariadb
+  hhvm:
+    build: ../ubuntu/hhvm.home
+    volumes:
+     - /share/hhvm/var/log:/var/log
+     - /share/www/html:/var/www/html
+    links:
+     - mariadb
+     - maxscale
+    depends_on:
+     - maxscale
+     - mariadb
+  nginx:
+    build: ../ubuntu/nginx.home
+    volumes:
+     - /share/nginx/var/log:/var/log
+     - /share/www/html:/var/www/html
+    links:
+     - hhvm
+    depends_on:
+     - hhvm
+    ports:
+     - "80:80"
+     - "443:443"
