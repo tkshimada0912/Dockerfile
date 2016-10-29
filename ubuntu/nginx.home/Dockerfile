@@ -1,16 +1,13 @@
 FROM ubuntu
+RUN apt-get update && apt-get upgrade -y &&\
+    ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 ENV PAGESPEED_VERSION 1.11.33.4
 ENV OPENSSL_VERSION 1.1.0b
 ENV NGINX_VERSION 1.11.5
 
-EXPOSE 80
-EXPOSE 443
-
-RUN apt update && apt upgrade -y &&\
-    ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime &&\
-    apt install -y g++ make &&\
-    apt install -y libpcre3-dev unzip git wget zlib1g-dev &&\
+RUN apt-get install -y g++ make &&\
+    apt-get install -y libpcre3-dev unzip git wget zlib1g-dev &&\
 \
 cd /tmp &&\
 wget https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}-beta.tar.gz &&\
@@ -25,6 +22,9 @@ tar zxvf openssl-${OPENSSL_VERSION}.tar.gz && rm openssl-${OPENSSL_VERSION}.tar.
 ln -s openssl-${OPENSSL_VERSION} openssl &&\
 \
 cd /tmp &&\
+git clone https://github.com/FRiCKLE/ngx_cache_purge.git &&\
+\
+cd /tmp &&\
 wget https://github.com/grahamedgecombe/nginx-ct/archive/master.zip &&\
 unzip master.zip && rm master.zip &&\
 \
@@ -32,7 +32,7 @@ cd /tmp &&\
 wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz &&\
 tar zxvf nginx-${NGINX_VERSION}.tar.gz && rm nginx-${NGINX_VERSION}.tar.gz &&\
 \
-cd /tmp/nginx-${NGINX_VERSION} && ./configure --add-module=../ngx_pagespeed \
+cd /tmp/nginx-${NGINX_VERSION} && ./configure --add-module=../ngx_pagespeed --add-module=../ngx_cache_purge \
 --add-module=../nginx-ct-master --with-openssl=../openssl \
 --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf \
 --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log \
@@ -59,9 +59,8 @@ COPY nginx/dhparams_4096.pem /etc/nginx/
 COPY nginx/nginx.conf /etc/nginx/
 COPY nginx/wordpress.conf /etc/nginx/
 
-RUN useradd nginx
-RUN mkdir -p /var/cache/nginx/client_temp && chown nginx /var/cache/nginx/client_temp
-RUN mkdir -p /var/run/nginx-cache && chown nginx /var/run/nginx-cache
+RUN mkdir -p /var/cache/nginx/client_temp && chown www-data /var/cache/nginx/client_temp
+RUN mkdir -p /var/run/nginx-cache && chown www-data /var/run/nginx-cache
 RUN cd /etc/nginx && ln -s /var/log/nginx logs
 
 # make sure the package repository is up to date
@@ -69,5 +68,8 @@ RUN cd /etc/nginx && ln -s /var/log/nginx logs
 # install memcached
 
 # expose memcached port
+
+EXPOSE 80
+EXPOSE 443
 
 ENTRYPOINT ["nginx"]

@@ -3,7 +3,7 @@ threads=8
 
 [server1]
 type=server
-address=mariadb.home
+address=mariadb
 port=3306
 protocol=MySQLBackend
 persistpoolmax=8

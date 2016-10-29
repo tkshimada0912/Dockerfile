@@ -24,6 +24,8 @@ services:
     depends_on:
      - maxscale
      - mariadb
+  memcached:
+     build: ../alpine/memcached
   nginx:
     build: ../ubuntu/nginx.home
     volumes:
@@ -31,8 +33,10 @@ services:
      - /share/www/html:/var/www/html
     links:
      - hhvm
+     - memcached
     depends_on:
      - hhvm
+     - memcached
     ports:
      - "80:80"
      - "443:443"
