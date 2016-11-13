@@ -1,12 +1,12 @@
 [maxscale]
-threads=8
+threads=auto
 
 [server1]
 type=server
 address=mariadb
 port=3306
 protocol=MySQLBackend
-persistpoolmax=8
+persistpoolmax=20
 persistmaxtime=1800
 
 [MySQL Monitor]
