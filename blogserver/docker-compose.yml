@@ -35,7 +35,7 @@ services:
     hostname: nginx
     volumes:
      - /share/nginx/var/log:/var/log
-     - /share/www/html:/var/www/html
+     - /share/www:/var/www
     links:
      - hhvm
      - memcached
