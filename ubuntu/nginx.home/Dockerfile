@@ -3,8 +3,8 @@ RUN apt-get update && apt-get upgrade -y &&\
     ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 ENV PAGESPEED_VERSION 1.11.33.4
-ENV OPENSSL_VERSION 1.1.0b
-ENV NGINX_VERSION 1.11.5
+ENV OPENSSL_VERSION 1.1.0c
+ENV NGINX_VERSION 1.11.6
 
 RUN apt-get install -y g++ make &&\
     apt-get install -y libpcre3-dev unzip git wget zlib1g-dev &&\
