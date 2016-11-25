@@ -6,7 +6,7 @@ ENV PAGESPEED_VERSION 1.11.33.4
 ENV OPENSSL_VERSION 1.1.0c
 ENV NGINX_VERSION 1.11.6
 
-RUN apt-get install -y g++ make &&\
+RUN apt-get update && apt-get install -y g++ make &&\
     apt-get install -y libpcre3-dev unzip git wget zlib1g-dev &&\
 \
 cd /tmp &&\
