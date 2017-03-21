@@ -6,6 +6,7 @@ services:
     volumes:
      - /share/mariadb/var/log:/var/log
      - /share/mariadb/var/lib/mysql:/var/lib/mysql
+    restart: always
   maxscale:
     build: ../maxscale.home
     hostname: maxscale
@@ -15,6 +16,7 @@ services:
      - mariadb
     depends_on:
      - mariadb
+    restart: always
   hhvm:
     build: ../ubuntu/hhvm.home
     hostname: hhvm
@@ -27,9 +29,11 @@ services:
     depends_on:
      - maxscale
      - mariadb
+    restart: always
   memcached:
-     build: ../alpine/memcached
-     hostname: memcached
+    build: ../alpine/memcached
+    hostname: memcached
+    restart: always
   nginx:
     build: ../ubuntu/nginx.home
     hostname: nginx
@@ -45,3 +49,4 @@ services:
     ports:
      - "80:80"
      - "443:443"
+    restart: always
