@@ -15,8 +15,12 @@ long_query_time = 1
 slow_query_log_file=mysql-slow.log
 query_cache_limit=4M
 query_cache_min_res_unit=4k
-query_cache_size=32M
+query_cache_size=34M
 query_cache_type=1
+tmp_table_size=32M
+max_heap_table_size=32M
+thread_cache_size=4
+innodb_buffer_pool_instances=1
 
 #
 # * Galera-related settings
