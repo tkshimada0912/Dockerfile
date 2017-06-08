@@ -40,6 +40,7 @@ services:
     volumes:
      - /share/nginx/var/log:/var/log
      - /share/www:/var/www
+     - /share/letsencrypt:/etc/letsencrypt
     links:
      - hhvm
      - memcached

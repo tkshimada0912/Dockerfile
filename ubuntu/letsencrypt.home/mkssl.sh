@@ -25,8 +25,13 @@ certbot certonly \
       -w /var/www/html/techblog.ayurina.net \
       -d techblog.ayurina.net
 
+mv 0000_cert.pem cert1.pem
+mv 0000_chain.pem chain1.pem
+mv 0001_chain.pem fullchain1.pem
+mv privkey.pem privkey1.pem
+
 mkdir -p /etc/letsencrypt/ecdsa/live
-ln -sf /etc/letsencrypt/ecdsa/archive/0000_cert.pem /etc/letsencrypt/ecdsa/live/cert.pem
-ln -sf /etc/letsencrypt/ecdsa/archive/0000_chain.pem /etc/letsencrypt/ecdsa/live/chain.pem
-ln -sf /etc/letsencrypt/ecdsa/archive/0001_chain.pem /etc/letsencrypt/ecdsa/live/fullchain.pem
-ln -sf /etc/letsencrypt/ecdsa/archive/privkey.pem /etc/letsencrypt/ecdsa/live/privkey.pem
+ln -sf /etc/letsencrypt/ecdsa/archive/cert1.pem /etc/letsencrypt/ecdsa/live/cert.pem
+ln -sf /etc/letsencrypt/ecdsa/archive/chain1.pem /etc/letsencrypt/ecdsa/live/chain.pem
+ln -sf /etc/letsencrypt/ecdsa/archive/fullchain1.pem /etc/letsencrypt/ecdsa/live/fullchain.pem
+ln -sf /etc/letsencrypt/ecdsa/archive/privkey1.pem /etc/letsencrypt/ecdsa/live/privkey.pem
