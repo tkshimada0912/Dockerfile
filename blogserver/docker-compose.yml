@@ -30,7 +30,6 @@ services:
      - maxscale
      - mariadb
     restart: always
-    privileged: true
   memcached:
     build: ../alpine/memcached
     hostname: memcached

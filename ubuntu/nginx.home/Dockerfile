@@ -52,9 +52,6 @@ make -j2 &&\
 make install &&\
 cd /tmp && rm -fr ng* openssl*
 
-COPY nginx/ssl/ayurina.net-ecc.crt /etc/nginx/
-COPY nginx/ssl/ayurina-ecc.key /etc/nginx/
-COPY nginx/ca.crt /etc/nginx/
 COPY nginx/dhparams_4096.pem /etc/nginx/
 COPY nginx/nginx.conf /etc/nginx/
 COPY nginx/wordpress.conf /etc/nginx/
