@@ -7,7 +7,7 @@ ENV OPENSSL_VERSION 1.1.0c
 ENV NGINX_VERSION 1.11.6
 
 RUN apt-get update && apt-get install -y g++ make &&\
-    apt-get install -y libpcre3-dev unzip git wget zlib1g-dev &&\
+    apt-get install -y libpcre3-dev unzip git wget zlib1g-dev tzdata &&\
 \
 cd /tmp &&\
 wget https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}-beta.tar.gz &&\
