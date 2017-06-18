@@ -2,9 +2,9 @@ FROM ubuntu
 RUN apt-get update && apt-get upgrade -y &&\
     ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
-ENV PAGESPEED_VERSION 1.11.33.4
+ENV PAGESPEED_VERSION 1.12.34.2
 ENV OPENSSL_VERSION 1.1.0c
-ENV NGINX_VERSION 1.11.6
+ENV NGINX_VERSION 1.12.0
 
 RUN apt-get update && apt-get install -y g++ make &&\
     apt-get install -y libpcre3-dev unzip git wget zlib1g-dev tzdata &&\
@@ -13,8 +13,8 @@ cd /tmp &&\
 wget https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}-beta.tar.gz &&\
 tar zxvf v${PAGESPEED_VERSION}-beta.tar.gz && ln -s ngx_pagespeed-${PAGESPEED_VERSION}-beta ngx_pagespeed && rm v${PAGESPEED_VERSION}-beta.tar.gz &&\
 cd /tmp/ngx_pagespeed/ &&\
-wget https://dl.google.com/dl/page-speed/psol/${PAGESPEED_VERSION}.tar.gz &&\
-tar xzvf ${PAGESPEED_VERSION}.tar.gz && rm ${PAGESPEED_VERSION}.tar.gz &&\
+wget https://dl.google.com/dl/page-speed/psol/${PAGESPEED_VERSION}-x64.tar.gz &&\
+tar xzvf ${PAGESPEED_VERSION}-x64.tar.gz && rm ${PAGESPEED_VERSION}-x64.tar.gz &&\
 \
 cd /tmp &&\
 wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz &&\
