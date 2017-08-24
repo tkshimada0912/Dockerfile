@@ -18,7 +18,7 @@ certbot certonly \
       --webroot \
       --agree-tos \
       --email tk.shimada.0912@gmail.com \
-      -w /var/www/html \
+      -w /var/www/html/ayurina.net \
       -d ayurina.net \
       -w /var/www/html/wordpress \
       -d blog.ayurina.net \
