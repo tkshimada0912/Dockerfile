@@ -1,37 +1,38 @@
 FROM ubuntu
 RUN apt-get update && apt-get upgrade -y &&\
+    apt-get install -y tzdata &&\
     ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
-ENV PAGESPEED_VERSION 1.12.34.2
-ENV OPENSSL_VERSION 1.1.0c
-ENV NGINX_VERSION 1.12.0
+ENV PAGESPEED_VERSION 1.13.35.2
+ENV OPENSSL_VERSION 1.1.0g
+ENV NGINX_VERSION 1.13.8
 
 RUN apt-get update && apt-get install -y g++ make &&\
-    apt-get install -y libpcre3-dev unzip git wget zlib1g-dev tzdata &&\
-\
+    apt-get install -y libpcre3-dev unzip git wget zlib1g-dev tzdata build-essential uuid-dev &&\
+
 cd /tmp &&\
 wget https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}-beta.tar.gz &&\
-tar zxvf v${PAGESPEED_VERSION}-beta.tar.gz && ln -s ngx_pagespeed-${PAGESPEED_VERSION}-beta ngx_pagespeed && rm v${PAGESPEED_VERSION}-beta.tar.gz &&\
+tar zxvf v${PAGESPEED_VERSION}-beta.tar.gz && ln -s incubator-pagespeed-ngx-${PAGESPEED_VERSION}-beta ngx_pagespeed && rm v${PAGESPEED_VERSION}-beta.tar.gz &&\
 cd /tmp/ngx_pagespeed/ &&\
 wget https://dl.google.com/dl/page-speed/psol/${PAGESPEED_VERSION}-x64.tar.gz &&\
 tar xzvf ${PAGESPEED_VERSION}-x64.tar.gz && rm ${PAGESPEED_VERSION}-x64.tar.gz &&\
-\
+
 cd /tmp &&\
 wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz &&\
 tar zxvf openssl-${OPENSSL_VERSION}.tar.gz && rm openssl-${OPENSSL_VERSION}.tar.gz &&\
 ln -s openssl-${OPENSSL_VERSION} openssl &&\
-\
+
 cd /tmp &&\
 git clone https://github.com/FRiCKLE/ngx_cache_purge.git &&\
-\
+
 cd /tmp &&\
 wget https://github.com/grahamedgecombe/nginx-ct/archive/master.zip &&\
 unzip master.zip && rm master.zip &&\
-\
+
 cd /tmp &&\
 wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz &&\
 tar zxvf nginx-${NGINX_VERSION}.tar.gz && rm nginx-${NGINX_VERSION}.tar.gz &&\
-\
+
 cd /tmp/nginx-${NGINX_VERSION} && ./configure --add-module=../ngx_pagespeed --add-module=../ngx_cache_purge \
 --add-module=../nginx-ct-master --with-openssl=../openssl \
 --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf \
