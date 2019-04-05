@@ -8,4 +8,4 @@ ADD mariadb.repo /etc/yum.repos.d/mariadb.repo
 RUN yum -y update && yum -y install MariaDB-client maxscale
 ADD maxscale.cnf /etc/maxscale.cnf
 
-ENTRYPOINT ["maxscale","-d"]
+ENTRYPOINT ["maxscale","-d","--user","maxscale"]
