@@ -4,7 +4,7 @@ RUN apt-get update && apt-get upgrade -y &&\
     ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 RUN apt-get -y install software-properties-common tzdata &&\
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xB4112585D386EB94 &&\
-    add-apt-repository "deb http://dl.hhvm.com/ubuntu $(lsb_release -sc) main" &&\
+    add-apt-repository "deb http://dl.hhvm.com/ubuntu bionic-lts-3.30 main" &&\
     apt-get update &&\
     apt-get install -y sudo hhvm
 
@@ -18,3 +18,4 @@ ENTRYPOINT ["sudo","-u","www-data","hhvm","--mode","server"]
 # install memcached
 
 # expose memcached port
+EXPOSE 9000
