@@ -30,7 +30,18 @@ services:
      - maxscale
      - mariadb
     restart: always
-    privileged: true
+  php-fpm:
+    build: ../ubuntu/php-fpm.home
+    hostname: php-fpm
+    volumes:
+     - /share/www/html:/var/www/html
+    links:
+     - mariadb
+     - maxscale
+    depends_on:
+     - maxscale
+     - mariadb
+    restart: always
   memcached:
     build: ../alpine/memcached
     hostname: memcached
@@ -43,9 +54,11 @@ services:
      - /share/www:/var/www
      - /share/letsencrypt:/etc/letsencrypt
     links:
+     - php-fpm
      - hhvm
      - memcached
     depends_on:
+     - php-fpm
      - hhvm
      - memcached
     ports:
