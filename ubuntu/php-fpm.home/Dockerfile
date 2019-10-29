@@ -4,7 +4,7 @@ RUN apt-get update && apt-get upgrade -y &&\
     apt-get install -y tzdata &&\
     ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
-RUN apt-get install -y php-fpm php-mbstring php-mysql php-opcache php-gd
+RUN apt-get install -y php-fpm php-mbstring php-mysql php-opcache php-gd php-xml
 RUN mkdir /run/php
 RUN sed -i -e 's/^listen = .*$/listen = 0.0.0.0:9000/' /etc/php/7.2/fpm/pool.d/www.conf
 RUN echo 'date.timezone = Asia/Tokyo' >> /etc/php/7.2/fpm/php.ini
