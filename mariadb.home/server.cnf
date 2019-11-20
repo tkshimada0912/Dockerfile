@@ -13,9 +13,9 @@
 slow_query_log
 long_query_time = 1
 slow_query_log_file=mysql-slow.log
-query_cache_limit=16M
+query_cache_limit=8M
 query_cache_min_res_unit=4k
-query_cache_size=64M
+query_cache_size=128M
 query_cache_type=1
 tmp_table_size=128M
 max_heap_table_size=128M
