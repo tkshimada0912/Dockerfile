@@ -6,6 +6,7 @@ services:
     volumes:
      - /share/mariadb/var/log:/var/log
      - /share/mariadb/var/lib/mysql:/var/lib/mysql
+     - /var/tmp/ram:/var/tmp/ram
     restart: always
   maxscale:
     build: ../maxscale.home

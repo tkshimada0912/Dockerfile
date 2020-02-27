@@ -14,4 +14,5 @@ ADD server.cnf /etc/my.cnf.d/server.cnf
 
 # expose memcached port
 
+ENV TMPDIR=/var/tmp/ram
 ENTRYPOINT ["/usr/bin/mysqld_safe"]
