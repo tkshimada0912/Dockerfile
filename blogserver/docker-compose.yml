@@ -18,19 +18,6 @@ services:
     depends_on:
      - mariadb
     restart: always
-  hhvm:
-    build: ../ubuntu/hhvm.home
-    hostname: hhvm
-    volumes:
-     - /share/hhvm/var/log:/var/log
-     - /share/www/html:/var/www/html
-    links:
-     - mariadb
-     - maxscale
-    depends_on:
-     - maxscale
-     - mariadb
-    restart: always
   php-fpm:
     build: ../ubuntu/php-fpm.home
     hostname: php-fpm
@@ -56,11 +43,9 @@ services:
      - /share/letsencrypt:/etc/letsencrypt
     links:
      - php-fpm
-     - hhvm
      - memcached
     depends_on:
      - php-fpm
-     - hhvm
      - memcached
     ports:
      - "80:80"
