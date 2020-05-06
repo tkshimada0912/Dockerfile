@@ -1,18 +1,18 @@
-FROM ubuntu
+FROM ubuntu:20.04
 RUN apt-get update && apt-get upgrade -y &&\
     apt-get install -y tzdata &&\
     ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 ENV PAGESPEED_VERSION 1.13.35.2
-ENV OPENSSL_VERSION 1.1.1b
-ENV NGINX_VERSION 1.14.2
+ENV OPENSSL_VERSION 1.1.1g
+ENV NGINX_VERSION 1.18.0
 
 RUN apt-get update && apt-get install -y g++ make &&\
     apt-get install -y libpcre3-dev unzip git wget zlib1g-dev tzdata build-essential uuid-dev &&\
 
 cd /tmp &&\
-wget https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}-beta.tar.gz &&\
-tar zxvf v${PAGESPEED_VERSION}-beta.tar.gz && ln -s incubator-pagespeed-ngx-${PAGESPEED_VERSION}-beta ngx_pagespeed && rm v${PAGESPEED_VERSION}-beta.tar.gz &&\
+wget https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}-stable.tar.gz &&\
+tar zxvf v${PAGESPEED_VERSION}-stable.tar.gz && ln -s incubator-pagespeed-ngx-${PAGESPEED_VERSION}-stable ngx_pagespeed && rm v${PAGESPEED_VERSION}-stable.tar.gz &&\
 cd /tmp/ngx_pagespeed/ &&\
 wget https://dl.google.com/dl/page-speed/psol/${PAGESPEED_VERSION}-x64.tar.gz &&\
 tar xzvf ${PAGESPEED_VERSION}-x64.tar.gz && rm ${PAGESPEED_VERSION}-x64.tar.gz &&\
