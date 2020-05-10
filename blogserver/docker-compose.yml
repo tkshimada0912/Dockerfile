@@ -19,7 +19,7 @@ services:
      - mariadb
     restart: always
   memcached:
-    build: ../alpine/memcached
+    build: ../ubuntu/memcached.home
     hostname: memcached
     restart: always
   php-fpm:
