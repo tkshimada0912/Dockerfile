@@ -18,6 +18,10 @@ services:
     depends_on:
      - mariadb
     restart: always
+  memcached:
+    build: ../alpine/memcached
+    hostname: memcached
+    restart: always
   php-fpm:
     build: ../ubuntu/php-fpm.home
     hostname: php-fpm
@@ -26,13 +30,11 @@ services:
     links:
      - mariadb
      - maxscale
+     - memcached
     depends_on:
      - maxscale
      - mariadb
-    restart: always
-  memcached:
-    build: ../alpine/memcached
-    hostname: memcached
+     - memcached
     restart: always
   nginx:
     build: ../ubuntu/nginx.home
