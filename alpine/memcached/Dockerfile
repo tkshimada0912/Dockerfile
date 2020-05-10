@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.11
 
 # Update the package repository and install applications
 RUN apk --no-cache --update add memcached && \
