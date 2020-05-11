@@ -6,13 +6,14 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
     export DEBCONF_NONINTERACTIVE_SEEN=true; \
     echo 'tzdata tzdata/Areas select Asia' | debconf-set-selections; \
     echo 'tzdata tzdata/Zones/Asia select Tokyo' | debconf-set-selections; \
-    apt-get update -qqy \
- && apt-get install -qqy --no-install-recommends \
+    apt-get update -y \
+ && apt-get install -y --no-install-recommends \
         tzdata
 
 RUN apt-get install -y php-fpm php-mbstring php-mysql php-opcache php-gd php-xml php-curl php-imagick php-zip php-memcached wget gnupg
-RUN sed -i -e 's/^listen = .*$/listen = 0.0.0.0:9000/' /etc/php/7.4/fpm/pool.d/www.conf
-RUN echo 'date.timezone = Asia/Tokyo' >> /etc/php/7.4/fpm/php.ini
+RUN sed -i -e 's/^listen = .*$/listen = 0.0.0.0:9000/' /etc/php/7.4/fpm/pool.d/www.conf;\
+    sed -i -e 's/^pm.max_children = .*$/pm.max_children = 20/' /etc/php/7.4/fpm/pool.d/www.conf;\
+    echo 'date.timezone = Asia/Tokyo' >> /etc/php/7.4/fpm/php.ini
 
 RUN echo newrelic-php5 newrelic-php5/application-name string "php-fpm" | debconf-set-selections; \
     echo newrelic-php5 newrelic-php5/license-key string NEWRELICAPIKEY | debconf-set-selections; \
