@@ -9,7 +9,7 @@ services:
      - /var/tmp/ram:/var/tmp/ram
     restart: always
   maxscale:
-    build: ../maxscale.home
+    build: ../ubuntu/maxscale.home
     hostname: maxscale
     volumes:
      - /share/maxscale/var/log:/var/log
