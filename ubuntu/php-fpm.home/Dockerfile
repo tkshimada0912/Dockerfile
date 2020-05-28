@@ -13,6 +13,9 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
 RUN apt-get install -y php-fpm php-mbstring php-mysql php-opcache php-gd php-xml php-curl php-imagick php-zip php-memcached wget gnupg
 RUN sed -i -e 's/^listen = .*$/listen = 0.0.0.0:9000/' /etc/php/7.4/fpm/pool.d/www.conf;\
     sed -i -e 's/^pm.max_children = .*$/pm.max_children = 20/' /etc/php/7.4/fpm/pool.d/www.conf;\
+    sed -i -e 's/^pm.start_servers = .*$/pm.start_servers = 5/' /etc/php/7.4/fpm/pool.d/www.conf;\
+    sed -i -e 's/^pm.min_spare_servers = .*$/pm.min_spare_servers = 2/' /etc/php/7.4/fpm/pool.d/www.conf;\
+    sed -i -e 's/^pm.max_spare_servers = .*$/pm.max_spare_servers = 6/' /etc/php/7.4/fpm/pool.d/www.conf;\
     echo 'date.timezone = Asia/Tokyo' >> /etc/php/7.4/fpm/php.ini
 
 RUN echo newrelic-php5 newrelic-php5/application-name string "php-fpm" | debconf-set-selections; \
