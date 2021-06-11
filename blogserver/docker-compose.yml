@@ -7,6 +7,8 @@ services:
      - /share/mariadb/var/log:/var/log
      - /share/mariadb/var/lib/mysql:/var/lib/mysql
      - /var/tmp/ram:/var/tmp/ram
+    ports:
+     - "127.0.0.1:3306:3306"
     restart: always
   maxscale:
     build: ../ubuntu/maxscale.home
@@ -21,6 +23,8 @@ services:
   memcached:
     build: ../ubuntu/memcached.home
     hostname: memcached
+    ports:
+     - "127.0.0.1:11211:11211"
     restart: always
   php-fpm:
     build: ../ubuntu/php-fpm.home
