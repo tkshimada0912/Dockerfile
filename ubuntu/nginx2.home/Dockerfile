@@ -1,7 +1,11 @@
 FROM ubuntu:24.04
-RUN apt update && apt upgrade -y &&\
-    DEBIAN_FRONTEND=noninteractive apt install -y tzdata &&\
-    ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+RUN export DEBIAN_FRONTEND=noninteractive; \
+    export DEBCONF_NONINTERACTIVE_SEEN=true; \
+    echo 'tzdata tzdata/Areas select Asia' | debconf-set-selections; \
+    echo 'tzdata tzdata/Zones/Asia select Tokyo' | debconf-set-selections; \
+    apt-get update -y \
+ && apt-get install -y --no-install-recommends \
+        tzdata
 
 RUN apt install -y curl gnupg2 ca-certificates lsb-release ubuntu-keyring &&\
     curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null &&\
