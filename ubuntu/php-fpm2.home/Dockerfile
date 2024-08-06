@@ -1,6 +1,7 @@
 # use the ubuntu base image provided by dotCloud
-# Ubuntu 20.04 LTS with php-fpm7.4
+# Ubuntu 20.04 LTS with php-fpm8.3
 FROM ubuntu:24.04
+ENV PHP_VERSION 8.3
 
 RUN export DEBIAN_FRONTEND=noninteractive; \
     export DEBCONF_NONINTERACTIVE_SEEN=true; \
@@ -11,12 +12,12 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
         tzdata
 
 RUN apt-get install -y php-fpm php-mbstring php-mysql php-opcache php-gd php-xml php-curl php-imagick php-zip php-memcached wget gnupg
-RUN sed -i -e 's/^listen = .*$/listen = 0.0.0.0:9000/' /etc/php/7.4/fpm/pool.d/www.conf;\
-    sed -i -e 's/^pm.max_children = .*$/pm.max_children = 20/' /etc/php/7.4/fpm/pool.d/www.conf;\
-    sed -i -e 's/^pm.start_servers = .*$/pm.start_servers = 5/' /etc/php/7.4/fpm/pool.d/www.conf;\
-    sed -i -e 's/^pm.min_spare_servers = .*$/pm.min_spare_servers = 2/' /etc/php/7.4/fpm/pool.d/www.conf;\
-    sed -i -e 's/^pm.max_spare_servers = .*$/pm.max_spare_servers = 6/' /etc/php/7.4/fpm/pool.d/www.conf;\
-    echo 'date.timezone = Asia/Tokyo' >> /etc/php/7.4/fpm/php.ini
+RUN sed -i -e 's/^listen = .*$/listen = 0.0.0.0:9000/' /etc/php/8.3/fpm/pool.d/www.conf;\
+    sed -i -e 's/^pm.max_children = .*$/pm.max_children = 20/' /etc/php/8.3/fpm/pool.d/www.conf;\
+    sed -i -e 's/^pm.start_servers = .*$/pm.start_servers = 5/' /etc/php/8.3/fpm/pool.d/www.conf;\
+    sed -i -e 's/^pm.min_spare_servers = .*$/pm.min_spare_servers = 2/' /etc/php/8.3/fpm/pool.d/www.conf;\
+    sed -i -e 's/^pm.max_spare_servers = .*$/pm.max_spare_servers = 6/' /etc/php/8.3/fpm/pool.d/www.conf;\
+    echo 'date.timezone = Asia/Tokyo' >> /etc/php/8.3/fpm/php.ini
 
 RUN echo newrelic-php5 newrelic-php5/application-name string "php-fpm" | debconf-set-selections; \
     echo newrelic-php5 newrelic-php5/license-key string NEWRELICAPIKEY | debconf-set-selections; \
@@ -25,7 +26,7 @@ RUN echo newrelic-php5 newrelic-php5/application-name string "php-fpm" | debconf
     apt-get update; \
     DEBIAN_FRONTEND=noninteractive apt-get -y install newrelic-php5
 
-ENTRYPOINT ["php-fpm7.4","--nodaemonize"]
+ENTRYPOINT ["php-fpm8.3","--nodaemonize"]
 EXPOSE 9000
 
 # make sure the package repository is up to date
