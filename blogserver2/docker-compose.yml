@@ -1,0 +1,37 @@
+version: '2'
+services:
+  mariadb:
+    build: ../ubuntu/mariadb2.home
+    hostname: mariadb
+    volumes:
+     - /share/mariadb/var/log:/var/log
+     - /share/mariadb/var/lib/mysql:/var/lib/mysql
+     - /var/tmp/ram:/var/tmp/ram
+    ports:
+     - "127.0.0.1:3306:3306"
+    restart: always
+  php-fpm:
+    build: ../ubuntu/php-fpm2.home
+    hostname: php-fpm
+    volumes:
+     - /share/www/html:/var/www/html
+    links:
+     - mariadb
+    depends_on:
+     - mariadb
+    restart: always
+  nginx:
+    build: ../ubuntu/nginx2.home
+    hostname: nginx
+    volumes:
+     - /share/nginx/var/log:/var/log
+     - /share/www:/var/www
+     - /share/letsencrypt:/etc/letsencrypt
+    links:
+     - php-fpm
+    depends_on:
+     - php-fpm
+    ports:
+     - "80:80"
+     - "443:443"
+    restart: always
