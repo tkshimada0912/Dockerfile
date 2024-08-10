@@ -16,6 +16,8 @@ RUN apt install -y nginx
 
 COPY nginx/nginx.conf /etc/nginx/
 COPY nginx/wordpress.conf /etc/nginx/
+COPY nginx/dhparams_4096.pem /etc/nginx/
+RUN cd /usr/share/nginx && ln -s /var/log/nginx logs
 
 # make sure the package repository is up to date
 

@@ -6,7 +6,6 @@ services:
     volumes:
      - /share/mariadb/var/log:/var/log
      - /share/mariadb/var/lib/mysql:/var/lib/mysql
-     - /var/tmp/ram:/var/tmp/ram
     ports:
      - "127.0.0.1:3306:3306"
     restart: always
