@@ -28,7 +28,7 @@ RUN sed -i -e 's/^listen = .*$/listen = 0.0.0.0:9000/' /etc/php/${PHP_VERSION}/f
     ## apt-get update; \
     ## DEBIAN_FRONTEND=noninteractive apt-get -y install newrelic-php5
 
-ENTRYPOINT ["php-fpm"${PHP_VERSION} , "--nodaemonize"]
+ENTRYPOINT php-fpm${PHP_VERSION}, --nodaemonize
 EXPOSE 9000
 
 # make sure the package repository is up to date
