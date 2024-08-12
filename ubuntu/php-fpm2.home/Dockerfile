@@ -11,7 +11,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
  && apt-get install -qqy --no-install-recommends \
         tzdata
 
-RUN apt-get install -y php-fpm php-mbstring php-mysql php-opcache php-gd php-xml php-curl php-imagick php-zip php-memcached wget gnupg
+RUN apt-get install -y php-fpm php-mbstring php-mysql php-opcache php-apcu php-gd php-xml php-curl php-imagick php-zip php-memcached wget gnupg
 RUN sed -i -e 's/^listen = .*$/listen = 0.0.0.0:9000/' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf;\
     sed -i -e 's/^pm.max_children = .*$/pm.max_children = 20/' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf;\
     sed -i -e 's/^pm.start_servers = .*$/pm.start_servers = 5/' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf;\
