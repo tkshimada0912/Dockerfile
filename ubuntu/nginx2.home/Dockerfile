@@ -12,7 +12,7 @@ RUN apt install -y curl gnupg2 ca-certificates lsb-release ubuntu-keyring &&\
     echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
 http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" | tee /etc/apt/sources.list.d/nginx.list
 
-RUN apt install -y nginx
+RUN apt-get update -qqy && apt install -y nginx
 
 COPY nginx/nginx.conf /etc/nginx/
 COPY nginx/wordpress.conf /etc/nginx/
