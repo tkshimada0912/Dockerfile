@@ -12,9 +12,15 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
         tzdata \
         software-properties-common \
         ca-certificates \
-        wget gnupg \
- && add-apt-repository -y ppa:ondrej/php && \
-    apt-get update
+        wget gnupg curl \
+ && curl -fsSLo /tmp/debsuryorg-archive-keyring.deb \
+    https://packages.sury.org/debsuryorg-archive-keyring.deb && \
+    dpkg -i /tmp/debsuryorg-archive-keyring.deb && \
+    echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ noble main" \
+      > /etc/apt/sources.list.d/php-sury.list && \
+    apt-get update && \
+    rm -f /tmp/debsuryorg-archive-keyring.deb \
+ && apt-get update
 
 
 RUN apt-get install -y --no-install-recommends \
