@@ -1,7 +1,7 @@
 # use the ubuntu base image provided by dotCloud
 # Ubuntu 20.04 LTS with php-fpm8.3
 FROM ubuntu:24.04
-ENV PHP_VERSION 8.3
+ENV PHP_VERSION 8.5
 
 RUN export DEBIAN_FRONTEND=noninteractive; \
     export DEBCONF_NONINTERACTIVE_SEEN=true; \
@@ -9,17 +9,40 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
     echo 'tzdata tzdata/Zones/Asia select Tokyo' | debconf-set-selections; \
     apt-get update -qqy \
  && apt-get install -qqy --no-install-recommends \
-        tzdata
+        tzdata \
+        software-properties-common \
+        ca-certificates \
+        wget gnupg \
+ && add-apt-repository -y ppa:ondrej/php && \
+    apt-get update
 
-RUN apt-get install -y php-fpm php-mbstring php-mysql php-opcache php-apcu php-gd php-xml php-curl php-imagick php-zip php-memcached php-intl wget gnupg
-RUN sed -i -e 's/^listen = .*$/listen = 0.0.0.0:9000/' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf;\
-    sed -i -e 's/^pm.max_children = .*$/pm.max_children = 20/' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf;\
-    sed -i -e 's/^pm.start_servers = .*$/pm.start_servers = 5/' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf;\
-    sed -i -e 's/^pm.min_spare_servers = .*$/pm.min_spare_servers = 2/' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf;\
-    sed -i -e 's/^pm.max_spare_servers = .*$/pm.max_spare_servers = 6/' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf;\
-    sed -i -e 's/^post_max_size = .*$/post_max_size = 20M/' /etc/php/${PHP_VERSION}/fpm/php.ini;\
-    sed -i -e 's/^upload_max_filesize = .*$/upload_max_filesize = 20M/' /etc/php/${PHP_VERSION}/fpm/php.ini;\
-    echo 'date.timezone = Asia/Tokyo' >> /etc/php/${PHP_VERSION}/fpm/php.ini
+
+RUN apt-get install -y --no-install-recommends \
+      php${PHP_VERSION}-cli \
+      php${PHP_VERSION}-fpm \
+      php${PHP_VERSION}-mbstring \
+      php${PHP_VERSION}-mysql \
+      php${PHP_VERSION}-apcu \
+      php${PHP_VERSION}-gd \
+      php${PHP_VERSION}-xml \
+      php${PHP_VERSION}-curl \
+      php${PHP_VERSION}-imagick \
+      php${PHP_VERSION}-zip \
+      php${PHP_VERSION}-memcached \
+      php${PHP_VERSION}-intl && \
+    rm -rf /var/lib/apt/lists/*
+RUN sed -i \
+        -e 's/^listen = .*$/listen = 0.0.0.0:9000/' \
+        -e 's/^pm.max_children = .*$/pm.max_children = 20/' \
+        -e 's/^pm.start_servers = .*$/pm.start_servers = 5/' \
+        -e 's/^pm.min_spare_servers = .*$/pm.min_spare_servers = 2/' \
+        -e 's/^pm.max_spare_servers = .*$/pm.max_spare_servers = 6/' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
+RUN printf '%s\n' \
+      'post_max_size = 24M' \
+      'upload_max_filesize = 20M' \
+      'date.timezone = Asia/Tokyo' \
+      > /etc/php/${PHP_VERSION}/fpm/conf.d/99-custom.ini
+
 
 ## RUN echo newrelic-php5 newrelic-php5/application-name string "php-fpm" | debconf-set-selections; \
     ## echo newrelic-php5 newrelic-php5/license-key string NEWRELICAPIKEY | debconf-set-selections; \
