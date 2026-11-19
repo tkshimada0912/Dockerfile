@@ -47,6 +47,7 @@ RUN printf '%s\n' \
       'post_max_size = 24M' \
       'upload_max_filesize = 20M' \
       'date.timezone = Asia/Tokyo' \
+      'session.upload_progress.enabled = 0' \
       > /etc/php/${PHP_VERSION}/fpm/conf.d/99-custom.ini
 
 
